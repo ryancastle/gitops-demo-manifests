@@ -1,0 +1,19 @@
+host: gitops-demo.apps.d0.ocp.dev.education.nsw.gov.au
+
+application: fruits
+
+services:
+  v1:
+  - tag: 1.0.4
+    image: quay.education.nsw.gov.au/demo/gitops-demo:1.0.4-SNAPSHOT
+    weight: 60
+  - tag: 1.0.3
+    image: quay.education.nsw.gov.au/demo/gitops-demo:1.0.3-SNAPSHOT
+    weight: 20
+  - tag: 1.0.2
+    image: quay.education.nsw.gov.au/demo/gitops-demo:1.0.2-SNAPSHOT
+    weight: 20
+  v2:
+  - tag: 2.0.0
+    image: quay.education.nsw.gov.au/demo/gitops-demo:2.0.0-SNAPSHOT
+    weight: 100

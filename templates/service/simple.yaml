@@ -1,0 +1,36 @@
+{{- range $version, $revisions := .Values.services }}
+  {{- $name := print $.Release.Name "-" $version }}
+apiVersion: serving.knative.dev/v1
+kind: Route
+metadata:
+  name: {{ $name }}
+spec:
+  traffic:
+  {{- range $revision := $revisions }}
+    {{- $config := print $name "--" (include "identifier" $revision.tag) }}
+  - revisionName: {{ $config }}
+    percent: {{ $revision.weight }}
+    tag: v{{ include "identifier" $revision.tag }}
+  {{- end }}
+---
+  {{- range $revision := $revisions }}
+    {{- $config := print $name "--" (include "identifier" $revision.tag) }}
+apiVersion: serving.knative.dev/v1
+kind: Configuration
+metadata:
+  name: {{ $name }}
+spec:
+  template:
+    metadata:
+      name: {{ $config }}
+    spec:
+      containers:
+      - image: {{ $revision.image }}
+        name: workload
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+---
+  {{- end }}
+{{- end }}

@@ -1,0 +1,3 @@
+{{- define "identifier" -}}
+  {{- regexReplaceAllLiteral "[^A-Za-z0-9]" . "-" | trimAll "-" -}}
+{{- end -}}
